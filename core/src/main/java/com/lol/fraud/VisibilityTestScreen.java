@@ -30,7 +30,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 import java.util.ArrayList;
 
 /** First screen of the application. Displayed after the application is created. */
-public class PlatformerTestScreen implements Screen, InputProcessor {
+public class VisibilityTestScreen implements Screen, InputProcessor {
     SpriteBatch batch;
     ShapeDrawer sd;
     Pixmap whitepixelpixmap;
