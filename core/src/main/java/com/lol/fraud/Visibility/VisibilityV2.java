@@ -18,8 +18,7 @@ public class VisibilityV2 {
      */
     public static ArrayList<Vector2> vertices = new ArrayList<>();
     public static ArrayList<line_segment> segments = new ArrayList<>();
-    public static ArrayList<Vector2> visibility_polygon(Vector2 point, ArrayList<Polygon> polys) {
-        convertPolysToLines(polys);
+    public static ArrayList<Vector2> visibility_polygon(Vector2 point) {
         TreeSet<line_segment> state = new TreeSet<>((o1, o2) -> {
             boolean res = cmp_dist(o1,o2,point);
             if(res){
@@ -42,13 +41,13 @@ public class VisibilityV2 {
             }
             else if (pab == orientation.RIGHT_TURN)
             {
-                events.add(new event(event.event_type.start, segment));
+                events.add(new event(event.event_type.start, new line_segment(segment.a,segment.b)));
                 events.add(new event(event.event_type.end, new line_segment(segment.b,segment.a)));
             }
             else
             {
                 events.add(new event(event.event_type.start, new line_segment(segment.b,segment.a)));
-                events.add(new event(event.event_type.end, segment));
+                events.add(new event(event.event_type.end, new line_segment(segment.a,segment.b)));
             }
 
             // Initialize state by adding line segments that are intersected
@@ -64,11 +63,8 @@ public class VisibilityV2 {
             orientation abp = compute_orientation(a, b, point);
             if (abp == orientation.RIGHT_TURN && (approx_equal(b.x, point.x) || (a.x < point.x && point.x < b.x)))
             {
-                state.add(segment);
+                state.add(new line_segment(segment.a,segment.b));
             }
-        }
-        for(event e: events){
-            //Gdx.app.log("events: " + events.size(),e.segment.a +", "+ e.segment.b);
         }
         // sort events by angle
         events.sort((a, b) -> {
@@ -88,10 +84,6 @@ public class VisibilityV2 {
                 return 1;
             }
         });
-        //Gdx.app.log("Events","BREAK");
-        for(event e: events){
-            //Gdx.app.log("events: " + events.size(),e.segment.a +", "+ e.segment.b);
-        }
         // find the visibility polygon
         vertices.clear();
         for (event e : events)
@@ -146,8 +138,7 @@ public class VisibilityV2 {
         return vertices;
     }
 
-    public static ArrayList<line_segment> convertPolysToLines(ArrayList<Polygon> polyList){
-        segments.clear();
+    public static void convertPolysToLines(ArrayList<Polygon> polyList){
         for(Polygon p:polyList){
             float[] vertices = p.getTransformedVertices();
             for(int i = 0; i < vertices.length-1;i+=2) {
@@ -161,6 +152,5 @@ public class VisibilityV2 {
             }
 
         }
-        return segments;
     }
 }
