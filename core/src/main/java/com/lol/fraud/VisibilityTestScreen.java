@@ -148,10 +148,10 @@ public class VisibilityTestScreen implements Screen, InputProcessor {
     public void getVisPoly(){
         if(mouse.x<1920&&mouse.x>0&&mouse.y>0&&mouse.y<1080){
             long timer = System.currentTimeMillis();
-            vis = VisibilityV2.visibility_polygon(mouse, polyList);
+            vis = VisibilityV2.visibility_polygon(mouse);
             System.out.println(System.currentTimeMillis()-timer);
         }else{
-            vis = VisibilityV2.visibility_polygon(new Vector2(400,400),polyList);
+            vis = VisibilityV2.visibility_polygon(new Vector2(400,400));
         }
         float[] visArray = new float[vis.size()*2];
         for(int i = 0; i < vis.size();i++){
